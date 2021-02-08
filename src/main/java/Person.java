@@ -1,9 +1,9 @@
 import java.util.Objects;
 
 public class Person {
-    private  final   String name;
+    private final String name;
     private final String surname;
-    private  int age ;
+    private int age;
     private String address;
 
     public Person(String name, String surname) {
@@ -16,38 +16,41 @@ public class Person {
         this.surname = surname;
         this.age = age;
     }
-    public boolean hasAge(){
+
+    public boolean hasAge() {
         if (age == -1) {
             return false;
-        }else return true;
+        } else return true;
 
 
     }
 
     public void setAddress(String address) {
-        if(hasAddress()== false) {
+        if (hasAddress() == false) {
             this.address = address;
         }
     }
 
-    public boolean hasAddress(){
+    public boolean hasAddress() {
         if (address == null) {
             return false;
-        }else {
+        } else {
             return true;
 
         }
 
 
     }
+
     public void happyBirthday() {
-        if(hasAge()== true){
-           age = age + 1;
+        if (hasAge() == true) {
+            age = age + 1;
         }
 
     }
-        public Builder newChildBuilder() {
-        return new Person.Builder( )
+
+    public Builder newChildBuilder() {
+        return new Person.Builder()
                 .setSurname(surname)
                 .setAddress(address)
                 .setAge(0)
@@ -81,8 +84,8 @@ public class Person {
     }
 
     public static class Builder {
-        private  String name;
-        private  String surname;
+        private String name;
+        private String surname;
         private int age = -1;
         private String address;
 
@@ -108,6 +111,7 @@ public class Person {
                 return this;
             }
         }
+
         public Builder setAddress(String val) {
             this.address = val;
             return this;
@@ -116,14 +120,22 @@ public class Person {
         public Person build() {
             if (name == null || surname == null) {
                 throw new IllegalStateException("не заполнены обязательные поля");
-            }return new Person(this);
             }
+            if (age == -1) {
+                Person person = new Person(name, surname);
+                person.age = age;
+                person.address = address;
+                return person;
+            } else {
+                Person person = new Person(name, surname, age);
+
+                person.address = address;
+                return person;
+            }
+
         }
 
-        private Person (Builder builder){
-            name = builder.name;
-            surname = builder.surname;
-            age = builder.age;
-            address = builder.address;
-        }
     }
+
+}
+
